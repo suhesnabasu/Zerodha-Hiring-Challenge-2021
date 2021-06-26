@@ -1,6 +1,5 @@
 # Zerodha Hiring Challenge 2021
 
-#### You can watch the Video of output here: https://youtu.be/XA8W0qyueRs (Demo Link)
 It is the standalone python django web app with the features:
 
 -> Downloads the equity bhavcopy zip from https://www.bseindia.com/markets/MarketInfo/BhavCopy.aspx every day at 18:00 IST.
