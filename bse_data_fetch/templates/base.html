@@ -1,0 +1,109 @@
+{% load static %}
+
+{% load jsonify %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-wEmeIV1mKuiNpC+IOBjI7aAzPcEZeedi5yW5f2yOq55WWLwNGmvvx4Um1vskeMj0" crossorigin="anonymous">
+
+    <script src="https://unpkg.com/vue@3.0.2"></script>
+
+    <title>Latest Bhav Copy BSE -Home Page</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-primary bg-primary p-3">
+        <div class="container">
+          <a class="navbar-brand" href="#">
+            <p class="text-white">Latest Bhav Copy - BSE</p>
+          </a>
+        </div>
+      </nav>
+
+
+
+    <div class="container">
+    {% block content %}
+
+    {% endblock %}
+    </div>
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-p34f1UUtsS3wqzfto5wAAmdvj+osOnFyQFpp4Ua3gs/ZVWx6oOypYoCJhGGScy+8" crossorigin="anonymous"></script>
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/table2csv@1.1.4/src/table2csv.min.js"></script>
+
+    <!-- Option 2: Separate Popper and Bootstrap JS -->
+    <!--
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.min.js" integrity="sha384-lpyLfhYuitXl2zRZ5Bn2fqnhNAKOAaM/0Kr9laMspuaMiZfGmfwRNFh8HlMy49eQ" crossorigin="anonymous"></script>
+
+    -->
+
+
+    
+    <script>
+        function download_csv(){
+            $('#data_table').table2csv({"filename":"Latest_Bhav_Copy.csv"});
+        }
+    </script>
+
+    <script type="text/javascript">
+        const app = Vue.createApp(
+        {
+            delimiters: ['[[', ']]'],
+            data(){
+                return {
+                    query : "",
+                    data : [],
+                    awaitingSearch: false,
+                }
+            },
+            methods:{
+                async getData(){
+                  // document.getElementById('loader_text').style.display = "block";
+                    const res = await fetch('/json_data/'+(this.query))
+                    const data = await res.json()
+                    console.log(data)
+                    this.data = data.data
+                    document.getElementById('loader_text').style.display = "none";
+                },
+            },
+            watch: {
+            query: function (val) {
+              document.getElementById('loader_text').style.display = "block";
+                if (!this.awaitingSearch) {
+                setTimeout(() => {
+                    this.getData()
+                    this.awaitingSearch = false;
+                }, 1000); // 1 sec delay
+                }
+                this.awaitingSearch = true;
+            },
+            },
+            beforeMount(){
+                this.getData()
+            }
+            // computed:{
+            //     async getData(){
+            //         const res = await fetch('/json_data/'+(this.query))
+            //         const data = await res.json()
+            //         console.log(data)
+            //         this.data = data.data
+            //     }
+            // }
+        }
+            
+    )
+    app.mount('#app')
+      </script>
+  </body>
+</html>

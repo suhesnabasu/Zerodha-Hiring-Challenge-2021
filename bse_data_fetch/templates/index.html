@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="app">
+        <!-- <h2 class="mt-5">Welcome</h2> -->
+        <form @submit.prevent="getData">
+            <div class="row my-5">
+                <div class="col-9">
+                    <input  type="search" placeholder="Search by name" class="form-control" v-model="query">
+                </div>
+                <div class="col-3">
+                  <div class="row">
+                  <div class="col-6">
+                    <input type="submit" class="btn btn-warning" value="Search">
+                  </div>
+                  <div class="col-6">
+                    <input type="button" id="downloadcsv" class="btn btn-info" value="Save CSV" onclick="download_csv()">
+                  </div>
+                </div>
+              </div>
+            </div>
+        </form>
+        <p id="loader_text">Please wait... Data is updating...</p>
+        <!-- [[data]] -->
+        <table class="table table-success table-hover table-striped" id="data_table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">SC_CODE</th>
+                <th scope="col">SC_NAME</th>
+                <th scope="col">OPEN</th>
+                <th scope="col">HIGH</th>
+                <th scope="col">LOW</th>
+                <th scope="col">CLOSE</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item,index) in data">
+                <td>[[index]]</td>
+                <td>[[item.SC_CODE]]</td>
+                <td>[[item.SC_NAME]]</td>
+                <td>[[item.OPEN]]</td>
+                <td>[[item.HIGH]]</td>
+                <td>[[item.LOW]]</td>
+                <td>[[item.CLOSE]]</td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+{% endblock %}
